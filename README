@@ -65,8 +65,15 @@ Se preferir usar **PostgreSQL**, basta adicionar a dependência no `pom.xml` e a
 ```properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/sorteio
 ```
+### 3. Configure as variáveis de ambiente: 
+Crie um arquivo .env na raiz do projeto e adicione as seguintes variáveis:
 
-### 3. Rodar a Aplicação
+DB_URL=jdbc:mysql://seu-host:3306/seu-banco
+DB_USERNAME=seu-usuario
+DB_PASSWORD=sua-senha
+JWT_SECRET=suaChaveSecretaSuperSeguraParaJWT
+
+### 4. Rodar a Aplicação
 
 ```sh
 mvn spring-boot:run
@@ -76,13 +83,13 @@ A API estará disponível em `http://localhost:8080`.
 
 ## Endpoints Principais
 
-| Método | Endpoint        | Descrição                                  |
-| ------ | --------------- | ------------------------------------------ |
-| GET    | /jogadores      | Lista todos os jogadores cadastrados       |
-| POST   | /jogadores      | Cadastra um novo jogador                   |
-| GET    | /sorteio/duplas-ativas | Retorna as duplas sorteadas         |
-| POST   | /sorteio/duplas | Realiza o sorteio de duplas (Apenas Admin) |
-| POST   | /sorteio/sortear-brinde | Realiza o sorteio do prêmio        |
+| Método | Endpoint                | Descrição                                  |
+| ------ | ----------------------- | ------------------------------------------ |
+| GET    | /jogadores              | Lista todos os jogadores cadastrados       |
+| POST   | /jogadores              | Cadastra um novo jogador                   |
+| GET    | /sorteio/duplas-ativas  | Retorna as duplas sorteadas                |
+| POST   | /sorteio/duplas         | Realiza o sorteio de duplas (Apenas Admin) |
+| POST   | /sorteio/sortear-brinde | Realiza o sorteio do prêmio                |
 
 ## Contato
 
