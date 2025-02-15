@@ -40,7 +40,7 @@ public class SorteadorDuplasBtApplication {
         }
         
 		SpringApplication.run(SorteadorDuplasBtApplication.class, args);
-        System.out.println("Aplicação no ar 🚀! Vá para http://localhost:8084/");
+        System.out.println("Aplicação no ar 🚀! Vá para http://localhost:8080/");
 	}
 
 }
