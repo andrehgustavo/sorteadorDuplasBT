@@ -21,11 +21,11 @@ public class SorteioService {
     public List<List<Jogador>> sortearDuplas() {
         List<Jogador> jogadores = jogadorRepository.findAll();
 
-        // Agrupa jogadores por nÌvel de classificaÁ„o (ordem)
+        // Agrupa jogadores por n√≠vel de classifica√ß√£o (ordem)
         Map<Integer, List<Jogador>> jogadoresPorClassificacao = jogadores.stream()
             .collect(Collectors.groupingBy(j -> j.getClassificacao().getOrdem()));
         
-            // Lista de ordens disponÌveis, ordenadas do menor para o maior
+            // Lista de ordens dispon√≠veis, ordenadas do menor para o maior
         List<Integer> ordens = new ArrayList<>(jogadoresPorClassificacao.keySet());
         Collections.sort(ordens);
         
@@ -40,14 +40,14 @@ public class SorteioService {
             List<Jogador> grupoMenor = jogadoresPorClassificacao.get(menorOrdem);
             List<Jogador> grupoMaior = jogadoresPorClassificacao.get(maiorOrdem);
             
-            // Se houver jogadores disponÌveis nos dois grupos, sorteia um par
+            // Se houver jogadores dispon√≠veis nos dois grupos, sorteia um par
             if (grupoMenor != null && !grupoMenor.isEmpty() && grupoMaior != null && !grupoMaior.isEmpty()) {
                 Jogador j1 = grupoMenor.remove(random.nextInt(grupoMenor.size()));
                 Jogador j2 = grupoMaior.remove(random.nextInt(grupoMaior.size()));
                 duplas.add(Arrays.asList(j1, j2));
             }
             
-            // Remove a classificaÁ„o se n„o houver mais jogadores nesse grupo
+            // Remove a classifica√ß√£o se n√£o houver mais jogadores nesse grupo
             if (grupoMenor.isEmpty()) {
                 jogadoresPorClassificacao.remove(menorOrdem);
                 ordens.remove(0);
@@ -59,7 +59,7 @@ public class SorteioService {
             }
         }
 
-        // Atualiza a vari·vel com as duplas sorteadas
+        // Atualiza a vari√°vel com as duplas sorteadas
         this.duplasSorteadas = duplas;
         
         return duplas;
@@ -80,7 +80,7 @@ public class SorteioService {
             return null; 
         }
         int indiceSorteado = random.nextInt(jogadores.size());
-        // Atualiza a vari·vel com as duplas sorteadas
+        // Atualiza a vari√°vel com as duplas sorteadas
         this.jogadorGanhadorBrinde = jogadores.get(indiceSorteado);
         return jogadorGanhadorBrinde;
     }

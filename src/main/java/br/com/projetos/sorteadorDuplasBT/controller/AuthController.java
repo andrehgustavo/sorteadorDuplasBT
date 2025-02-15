@@ -43,9 +43,9 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody Usuario usuario) {
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
-        usuario.setRole(Role.USER); // Por padr„o, todo usu·rio novo ser· USER
+        usuario.setRole(Role.USER); // Por padr√£o, todo usu√°rio novo ser√° USER
         usuarioRepository.save(usuario);
-        return ResponseEntity.ok("Usu·rio cadastrado com sucesso");
+        return ResponseEntity.ok("Usu√°rio cadastrado com sucesso");
     }
 
     @PostMapping("/login")
@@ -66,7 +66,7 @@ public class AuthController {
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Collections.singletonMap("error", "Usu·rio ou senha inv·lidos"));
+                    .body(Collections.singletonMap("error", "Usu√°rio ou senha inv√°lidos"));
         }
     }
 }

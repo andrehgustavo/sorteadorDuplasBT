@@ -50,12 +50,12 @@ public class JogadorService {
     @Transactional
     public Jogador atualizarJogador(Long id, String nome, Long classificacaoId, MultipartFile foto) {
         Jogador jogadorExistente = jogadorRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Jogador n„o encontrado"));
+            .orElseThrow(() -> new RuntimeException("Jogador n√£o encontrado"));
 
         jogadorExistente.setNome(nome);
         
         Classificacao classificacao = classificacaoRepository.findById(classificacaoId)
-            .orElseThrow(() -> new RuntimeException("ClassificaÁ„o n„o encontrada"));
+            .orElseThrow(() -> new RuntimeException("Classifica√ß√£o n√£o encontrada"));
         jogadorExistente.setClassificacao(classificacao);
 
         if (foto != null && !foto.isEmpty()) {
