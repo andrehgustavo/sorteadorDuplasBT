@@ -23,4 +23,7 @@ public class Jogador {
     @Column(name = "foto", columnDefinition = "bytea")
     private byte[] foto;
 
+    @Column(name = "participa_brinde")
+    private boolean participaBrinde = false;
+
 }

@@ -13,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/jogadores")
@@ -57,4 +59,17 @@ public class JogadorController {
         jogadorService.excluir(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("/atualizarParticipacaoBrinde")
+    public ResponseEntity<Void> atualizarParticipacaoBrindeEmMassa(@RequestBody List<Jogador> jogadores) {
+        try {
+            jogadorService.atualizarParticipacaoBrindeEmMassa(jogadores);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace(); // Loga a exceção para verificar o motivo do erro
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }   
+
+
 }

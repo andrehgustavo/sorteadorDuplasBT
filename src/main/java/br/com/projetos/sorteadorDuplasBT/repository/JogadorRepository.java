@@ -13,4 +13,6 @@ public interface JogadorRepository extends JpaRepository<Jogador, Long> {
     Optional<Jogador> findByNome(String nome);
 
     List<Jogador> findAllByOrderByNomeAsc();
+
+    List<Jogador> findByParticipaBrindeTrue();
 }

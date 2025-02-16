@@ -1,9 +1,13 @@
 package br.com.projetos.sorteadorDuplasBT.service;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -67,5 +71,16 @@ public class JogadorService {
         }
 
         return jogadorRepository.save(jogadorExistente);
+    }
+
+    public Jogador atualizarParticipacaoBrinde(Long id, Boolean participaBrinde) {
+        Jogador jogador = jogadorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Jogador não encontrado"));
+        jogador.setParticipaBrinde(participaBrinde);
+        return jogadorRepository.save(jogador);
+    }
+
+    public void atualizarParticipacaoBrindeEmMassa(List<Jogador> jogadores) {
+        jogadorRepository.saveAll(jogadores);
     }
 }
