@@ -4,6 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# Ignorar pasta de fotos dos jogadores
+/src/main/resources/static/fotos/jogadores
+
 ### STS ###
 .apt_generated
 .classpath
