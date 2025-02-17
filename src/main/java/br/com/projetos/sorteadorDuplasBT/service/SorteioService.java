@@ -27,47 +27,76 @@ public class SorteioService {
 
     public List<Dupla> sortearDuplas() {
         List<Jogador> jogadores = jogadorRepository.findAll();
-
+    
         // Agrupar jogadores por classificação
         Map<Integer, List<Jogador>> jogadoresPorClassificacao = jogadores.stream()
                 .collect(Collectors.groupingBy(j -> j.getClassificacao().getOrdem()));
-
-        List<Integer> ordens = new ArrayList<>(jogadoresPorClassificacao.keySet());
+    
+        LinkedList<Integer> ordens = new LinkedList<>(jogadoresPorClassificacao.keySet());
         Collections.sort(ordens);
-
+    
         List<Dupla> duplas = new ArrayList<>();
+        List<Jogador> jogadoresSemPar = new ArrayList<>();
         Random random = new Random();
-
-        while (!jogadoresPorClassificacao.isEmpty()) {
-            int menorOrdem = ordens.get(0);
-            int maiorOrdem = ordens.get(ordens.size() - 1);
-
-            List<Jogador> grupoMenor = jogadoresPorClassificacao.get(menorOrdem);
-            List<Jogador> grupoMaior = jogadoresPorClassificacao.get(maiorOrdem);
-
-            if (grupoMenor != null && !grupoMenor.isEmpty() && grupoMaior != null && !grupoMaior.isEmpty()) {
-                Jogador j1 = grupoMenor.remove(random.nextInt(grupoMenor.size()));
-                Jogador j2 = grupoMaior.remove(random.nextInt(grupoMaior.size()));
-                duplas.add(new Dupla(j1, j2));
-            }
-
-            if (grupoMenor.isEmpty()) {
+    
+        while (!ordens.isEmpty()) {
+            int menorOrdem = ordens.getFirst();
+    
+            List<Jogador> grupoMenorOrdem = jogadoresPorClassificacao.get(menorOrdem);
+            if (grupoMenorOrdem == null || grupoMenorOrdem.isEmpty()) {
                 jogadoresPorClassificacao.remove(menorOrdem);
-                ordens.remove(0);
+                ordens.removeFirst();
+                continue;
             }
-
-            if (grupoMaior.isEmpty()) {
-                jogadoresPorClassificacao.remove(maiorOrdem);
-                ordens.remove(ordens.size() - 1);
+    
+            Jogador j1 = grupoMenorOrdem.remove(random.nextInt(grupoMenorOrdem.size()));
+    
+            // Remover a ordem se estiver vazia
+            if (grupoMenorOrdem.isEmpty()) {
+                jogadoresPorClassificacao.remove(menorOrdem);
+                ordens.removeFirst();
+            }
+    
+            // Encontrar jogador da menor classificação disponível
+            Jogador j2 = null;
+            for (int i = ordens.size() - 1; i >= 0; i--) {
+                int ordemAtual = ordens.get(i);
+                List<Jogador> grupoAtual = jogadoresPorClassificacao.get(ordemAtual);
+    
+                if (grupoAtual != null && !grupoAtual.isEmpty()) {
+                    j2 = grupoAtual.remove(random.nextInt(grupoAtual.size()));
+                    
+                    // Remover a ordem se estiver vazia
+                    if (grupoAtual.isEmpty()) {
+                        jogadoresPorClassificacao.remove(ordemAtual);
+                        ordens.remove(i);
+                    }
+                    break;
+                }
+            }
+    
+            if (j2 != null) {
+                duplas.add(new Dupla(j1, j2));
+            } else {
+                jogadoresSemPar.add(j1);
             }
         }
-
+    
+        // Tratamento para jogadores sem par
+        if (!jogadoresSemPar.isEmpty()) {
+            System.out.println("Número de jogadores ímpar. Alguns jogadores não têm par.");
+        }
+    
         // Limpa duplas antigas e salva as novas
         duplaRepository.deleteAll();
         duplaRepository.saveAll(duplas);
-
+    
         return duplas;
     }
+    
+    
+    
+    
 
     public List<Dupla> findDuplas() {
         return duplaRepository.findAll();
