@@ -5,12 +5,10 @@ import java.time.LocalDate;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "inscricao")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 public class Inscricao {
 
@@ -19,11 +17,11 @@ public class Inscricao {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "campeonato_id", nullable = false)
+    @JoinColumn(name = "id_campeonato", nullable = false)
     private Campeonato campeonato;
 
     @ManyToOne
-    @JoinColumn(name = "dupla_id", nullable = false)
+    @JoinColumn(name = "id_dupla", nullable = false)
     private Dupla dupla;
 
     @Column(nullable = false)
@@ -31,4 +29,12 @@ public class Inscricao {
 
     @Enumerated(EnumType.STRING)
     private StatusInscricao status;
+    
+    
+    public Inscricao(Campeonato campeonato2, Dupla dupla2, LocalDate now, StatusInscricao status) {
+        this.campeonato = campeonato2;
+        this.dupla = dupla2;
+        this.dataInscricao = now;
+        this.status = status;
+    }
 }

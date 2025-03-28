@@ -4,15 +4,11 @@ import java.time.LocalDate;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "campeonato")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Campeonato {
 
     @Id
