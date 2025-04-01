@@ -19,9 +19,8 @@ public class Jogador {
     @JoinColumn(name = "id_classificacao", nullable = false)
     private Classificacao classificacao;
    
-
-    @Column(name = "foto", columnDefinition = "bytea")
-    private byte[] foto;
+    @Column(name = "foto_url") 
+    private String fotoUrl;
 
     @Column(name = "participa_brinde")
     private boolean participaBrinde = false;

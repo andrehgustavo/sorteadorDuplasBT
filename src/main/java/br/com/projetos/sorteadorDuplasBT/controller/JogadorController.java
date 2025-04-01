@@ -3,14 +3,12 @@ package br.com.projetos.sorteadorDuplasBT.controller;
 import br.com.projetos.sorteadorDuplasBT.model.Jogador;
 import br.com.projetos.sorteadorDuplasBT.service.JogadorService;
 import jakarta.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -45,7 +43,7 @@ public class JogadorController {
         @PathVariable Long id,
         @RequestParam("nome") String nome,
         @RequestParam("classificacaoId") Long classificacaoId,
-        @RequestPart(value = "foto", required = false) MultipartFile foto) {
+        @RequestPart(value = "foto", required = false) MultipartFile foto) throws IOException {
         
         Jogador jogadorAtualizado = jogadorService.atualizarJogador(id, nome, classificacaoId, foto);
         return ResponseEntity.ok(jogadorAtualizado);
@@ -64,10 +62,17 @@ public class JogadorController {
             jogadorService.atualizarParticipacaoBrindeEmMassa(jogadores);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
-            e.printStackTrace(); // Loga a exceção para verificar o motivo do erro
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-    }   
-
-
+    } 
+    
+    @PostMapping("/{id}/foto")
+    public ResponseEntity<String> uploadFoto(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+        try {
+            String fotoUrl = jogadorService.uploadFoto(id, file);
+            return ResponseEntity.ok(fotoUrl);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao salvar foto");
+        }
+    }
 }
