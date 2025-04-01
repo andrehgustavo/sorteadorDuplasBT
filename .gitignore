@@ -6,6 +6,7 @@ target/
 
 # Ignorar pasta de fotos dos jogadores
 /src/main/resources/static/fotos/jogadores
+/uploads
 
 ### STS ###
 .apt_generated
