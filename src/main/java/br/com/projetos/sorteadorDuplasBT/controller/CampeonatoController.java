@@ -21,6 +21,11 @@ public class CampeonatoController {
         return campeonatoService.listarTodos();
     }
 
+    @GetMapping("/ativo")
+    public ResponseEntity<Campeonato> buscarCampeonatoAtivo() {
+        return ResponseEntity.ok(campeonatoService.buscarAtivo());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Campeonato> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(campeonatoService.buscarPorId(id));

@@ -7,11 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.projetos.sorteadorDuplasBT.model.Campeonato;
-import br.com.projetos.sorteadorDuplasBT.model.Dupla;
 import br.com.projetos.sorteadorDuplasBT.model.Inscricao;
+import br.com.projetos.sorteadorDuplasBT.model.Jogador;
 import br.com.projetos.sorteadorDuplasBT.model.StatusInscricao;
+import br.com.projetos.sorteadorDuplasBT.repository.CampeonatoRepository;
 import br.com.projetos.sorteadorDuplasBT.repository.InscricaoRepository;
-import jakarta.persistence.EntityNotFoundException;
+import br.com.projetos.sorteadorDuplasBT.repository.JogadorRepository;
+
 
 @Service
 public class InscricaoService {
@@ -19,35 +21,31 @@ public class InscricaoService {
     @Autowired
     private InscricaoRepository inscricaoRepository;
     @Autowired
-    private CampeonatoService campeonatoService;
+    private CampeonatoRepository campeonatoRepository;
     @Autowired
-    private DuplaService duplaService;
+    private JogadorRepository jogadorRepository;
 
-    public List<Inscricao> listarTodos() {
-        return inscricaoRepository.findAll();
+    public List<Inscricao> listarPorCampeonato(Long campeonatoId) {
+        return inscricaoRepository.findByCampeonatoId(campeonatoId);
     }
 
-    public Inscricao buscarPorId(Long id) {
-        return inscricaoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Inscrição não encontrada"));
-    }
+    public Inscricao inscreverJogador(Long campeonatoId, Long jogadorId) {
+        Campeonato campeonato = campeonatoRepository.findById(campeonatoId)
+            .orElseThrow(() -> new RuntimeException("Campeonato não encontrado"));
 
-    public Inscricao inscrever(Long campeonatoId, Long duplaId) {
-        Campeonato campeonato = campeonatoService.buscarPorId(campeonatoId);
-        Dupla dupla = duplaService.buscarPorId(duplaId);
+        Jogador jogador = jogadorRepository.findById(jogadorId)
+            .orElseThrow(() -> new RuntimeException("Jogador não encontrado"));
 
-        if (campeonato.getMaxDuplas() != null &&
-            inscricaoRepository.countByCampeonatoId(campeonatoId) >= campeonato.getMaxDuplas()) {
-            throw new IllegalStateException("Limite de duplas atingido para este campeonato");
-        }
-
-        Inscricao inscricao = new Inscricao(campeonato, dupla, LocalDate.now(), StatusInscricao.PENDENTE);
-
+        Inscricao inscricao = new Inscricao(campeonato, jogador, LocalDate.now(), StatusInscricao.CONFIRMADA);
         return inscricaoRepository.save(inscricao);
     }
 
-    public void deletar(Long id) {
-        inscricaoRepository.deleteById(id);
+    public void removerInscricao(Long inscricaoId) {
+        inscricaoRepository.deleteById(inscricaoId);
+    }
+
+    public void atualizarParticipacaoBrindeEmMassa(List<Inscricao> inscricoes) {
+        inscricaoRepository.saveAll(inscricoes);
     }
 }
 

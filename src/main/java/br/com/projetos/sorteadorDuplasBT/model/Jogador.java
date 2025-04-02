@@ -22,7 +22,4 @@ public class Jogador {
     @Column(name = "foto_url") 
     private String fotoUrl;
 
-    @Column(name = "participa_brinde")
-    private boolean participaBrinde = false;
-
 }

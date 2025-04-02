@@ -17,19 +17,30 @@ public class Dupla {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "id_jogador_1", nullable = false)
-    private Jogador jogador1;
+    @JoinColumn(name = "id_campeonato", nullable = false)
+    private Campeonato campeonato;
 
     @ManyToOne
-    @JoinColumn(name = "id_jogador_2", nullable = false)
-    private Jogador jogador2;
+    @JoinColumn(name = "id_inscricao_1", nullable = false)
+    private Inscricao inscricao1;
+
+    @ManyToOne
+    @JoinColumn(name = "id_inscricao_2", nullable = false)
+    private Inscricao inscricao2;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
 
-    public Dupla(Jogador jogador1, Jogador jogador2) {
-        this.jogador1 = jogador1;
-        this.jogador2 = jogador2;
+    public Dupla(Inscricao inscricao1, Inscricao inscricao2) {
+        this.inscricao1 = inscricao1;
+        this.inscricao2 = inscricao2;
+        this.timestamp = new Date();
+    }
+
+    public Dupla(Campeonato campeonato, Inscricao inscricao1, Inscricao inscricao2) {
+        this.campeonato = campeonato;
+        this.inscricao1 = inscricao1;
+        this.inscricao2 = inscricao2;
         this.timestamp = new Date();
     }
 }

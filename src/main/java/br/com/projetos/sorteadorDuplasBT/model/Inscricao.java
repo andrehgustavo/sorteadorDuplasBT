@@ -3,13 +3,13 @@ package br.com.projetos.sorteadorDuplasBT.model;
 import java.time.LocalDate;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "inscricao")
 @Data
-@AllArgsConstructor
+@NoArgsConstructor
 public class Inscricao {
 
     @Id
@@ -21,20 +21,24 @@ public class Inscricao {
     private Campeonato campeonato;
 
     @ManyToOne
-    @JoinColumn(name = "id_dupla", nullable = false)
-    private Dupla dupla;
+    @JoinColumn(name = "id_jogador", nullable = false)
+    private Jogador jogador;
 
     @Column(nullable = false)
     private LocalDate dataInscricao;
 
     @Enumerated(EnumType.STRING)
     private StatusInscricao status;
+
+    @Column(name = "participa_brinde")
+    private boolean participaBrinde = false;
     
     
-    public Inscricao(Campeonato campeonato2, Dupla dupla2, LocalDate now, StatusInscricao status) {
+    public Inscricao(Campeonato campeonato2, Jogador jogador, LocalDate now, StatusInscricao status) {
         this.campeonato = campeonato2;
-        this.dupla = dupla2;
+        this.jogador = jogador;
         this.dataInscricao = now;
         this.status = status;
+        this.participaBrinde = true;
     }
 }

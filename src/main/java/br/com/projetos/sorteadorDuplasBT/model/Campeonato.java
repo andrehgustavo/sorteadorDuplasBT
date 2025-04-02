@@ -1,7 +1,7 @@
 package br.com.projetos.sorteadorDuplasBT.model;
 
 import java.time.LocalDate;
-
+import java.util.List;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -26,5 +26,9 @@ public class Campeonato {
     @Enumerated(EnumType.STRING)
     private StatusCampeonato status;
 
-    private Integer maxDuplas;
+    /*Representa se o campeonato está ativo no momento. */
+    @Column(nullable = false)
+    private boolean ativo = false; 
+
+   
 }

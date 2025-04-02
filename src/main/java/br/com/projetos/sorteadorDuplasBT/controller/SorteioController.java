@@ -1,9 +1,10 @@
 package br.com.projetos.sorteadorDuplasBT.controller;
 
 import br.com.projetos.sorteadorDuplasBT.model.Dupla;
-import br.com.projetos.sorteadorDuplasBT.model.Jogador;
+import br.com.projetos.sorteadorDuplasBT.model.Inscricao;
 import br.com.projetos.sorteadorDuplasBT.service.SorteioService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,38 +14,35 @@ import java.util.List;
 @RequestMapping("/sorteio")
 public class SorteioController {
     
-    private final SorteioService sorteioService;
+    @Autowired
+    private SorteioService sorteioService;
 
-    public SorteioController(SorteioService sorteioService) {
-        this.sorteioService = sorteioService;
-    }
-
-    @PostMapping("/duplas")
-    public ResponseEntity<List<Dupla>> realizarSorteio() {
-        List<Dupla> duplas = sorteioService.sortearDuplas();
+    @PostMapping("{idCampeonato}/duplas")
+    public ResponseEntity<List<Dupla>> realizarSorteio(@PathVariable Long idCampeonato) {
+        List<Dupla> duplas = sorteioService.sortearDuplas(idCampeonato);
         return ResponseEntity.ok(duplas);
     }
 
-    @GetMapping("/duplas")
-    public ResponseEntity<List<Dupla>> findDuplas() {
-        List<Dupla> duplas = sorteioService.findDuplas();
+    @GetMapping("{idCampeonato}/duplas")
+    public ResponseEntity<List<Dupla>> findDuplas(@PathVariable Long idCampeonato) {
+        List<Dupla> duplas = sorteioService.findDuplas(idCampeonato);
         return ResponseEntity.ok(duplas);
     }
 
-    @GetMapping("/sortear-brinde")
-    public Jogador sortearBrinde() {
-        return sorteioService.sortearBrinde();
+    @GetMapping("{idCampeonato}/sortear-brinde")
+    public Inscricao sortearBrinde(@PathVariable Long idCampeonato) {
+        return sorteioService.sortearBrinde(idCampeonato);
     }
 
     @GetMapping("/ganhador-brinde")
-    public Jogador obterGanhadorBrinde() {
-        return sorteioService.getJogadorGanhadorBrinde();
+    public Inscricao obterGanhadorBrinde() {
+        return sorteioService.getInscricaoGanhadorBrinde();
     }
 
-    @DeleteMapping("/duplas")
-    public ResponseEntity<Void> apagarTodasDuplas() {
+    @DeleteMapping("{idCampeonato}/duplas")
+    public ResponseEntity<Void> apagarTodasDuplas(@PathVariable Long idCampeonato) {
         try {
-            sorteioService.apagarTodasDuplas();
+            sorteioService.apagarTodasDuplas(idCampeonato);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             e.printStackTrace(); // Loga a exceção para verificar o motivo do erro

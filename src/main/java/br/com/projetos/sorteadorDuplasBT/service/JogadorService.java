@@ -77,7 +77,7 @@ public class JogadorService {
     public Jogador atualizarParticipacaoBrinde(Long id, Boolean participaBrinde) {
         Jogador jogador = jogadorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Jogador não encontrado"));
-        jogador.setParticipaBrinde(participaBrinde);
+        //jogador.setParticipaBrinde(participaBrinde);
         return jogadorRepository.save(jogador);
     }
 

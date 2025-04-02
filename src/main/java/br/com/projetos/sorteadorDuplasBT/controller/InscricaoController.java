@@ -7,13 +7,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.projetos.sorteadorDuplasBT.model.Inscricao;
+import br.com.projetos.sorteadorDuplasBT.model.Jogador;
 import br.com.projetos.sorteadorDuplasBT.service.InscricaoService;
 
 @RestController
@@ -23,26 +25,30 @@ public class InscricaoController {
     @Autowired
     private InscricaoService inscricaoService;
 
-    @GetMapping
-    public List<Inscricao> listarTodos() {
-        return inscricaoService.listarTodos();
+    @GetMapping("/campeonato/{campeonatoId}")
+    public ResponseEntity<List<Inscricao>> listarPorCampeonato(@PathVariable Long campeonatoId) {
+        return ResponseEntity.ok(inscricaoService.listarPorCampeonato(campeonatoId));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Inscricao> buscarPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(inscricaoService.buscarPorId(id));
+    @PostMapping("/{campeonatoId}/{jogadorId}")
+    public ResponseEntity<Inscricao> inscreverJogador(@PathVariable Long campeonatoId, @PathVariable Long jogadorId) {
+        return ResponseEntity.ok(inscricaoService.inscreverJogador(campeonatoId, jogadorId));
     }
 
-    @PostMapping
-    public ResponseEntity<Inscricao> inscrever(@RequestParam Long campeonatoId, @RequestParam Long duplaId) {
-        Inscricao novaInscricao = inscricaoService.inscrever(campeonatoId, duplaId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(novaInscricao);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        inscricaoService.deletar(id);
+    @DeleteMapping("/{inscricaoId}")
+    public ResponseEntity<Void> removerInscricao(@PathVariable Long inscricaoId) {
+        inscricaoService.removerInscricao(inscricaoId);
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("/atualizarParticipacaoBrinde")
+    public ResponseEntity<Void> atualizarParticipacaoBrindeEmMassa(@RequestBody List<Inscricao> inscricoes) {
+        try {
+            inscricaoService.atualizarParticipacaoBrindeEmMassa(inscricoes);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    } 
 }
 

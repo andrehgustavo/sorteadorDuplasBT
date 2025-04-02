@@ -25,6 +25,12 @@ public class CampeonatoService {
     }
 
     public Campeonato salvar(Campeonato campeonato) {
+         // Desativa o campeonato ativo atual, se houver
+         campeonatoRepository.findByAtivoTrue().ifPresent(campeonatoAnterior -> {
+            campeonatoAnterior.setAtivo(false);
+            campeonatoRepository.save(campeonatoAnterior);
+        });
+        campeonato.setAtivo(true);
         return campeonatoRepository.save(campeonato);
     }
 
@@ -34,11 +40,16 @@ public class CampeonatoService {
         campeonato.setData(campeonatoAtualizado.getData());
         campeonato.setLocal(campeonatoAtualizado.getLocal());
         campeonato.setStatus(campeonatoAtualizado.getStatus());
-        campeonato.setMaxDuplas(campeonatoAtualizado.getMaxDuplas());
+        campeonato.setAtivo(campeonatoAtualizado.isAtivo());
         return campeonatoRepository.save(campeonato);
     }
 
     public void deletar(Long id) {
         campeonatoRepository.deleteById(id);
+    }
+
+    public Campeonato buscarAtivo() {
+        return campeonatoRepository.findByAtivoTrue()
+                .orElseThrow(() -> new EntityNotFoundException("Campeonato não encontrado"));
     }
 }
