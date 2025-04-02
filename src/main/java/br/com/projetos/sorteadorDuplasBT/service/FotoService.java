@@ -20,6 +20,6 @@ public class FotoService {
         Files.createDirectories(caminhoArquivo.getParent()); // Garante que o diretório existe
         Files.write(caminhoArquivo, file.getBytes());
 
-        return "/fotos/" + nomeArquivo; // Retorna a URL relativa da foto
+        return nomeArquivo; // Retorna a URL relativa da foto
     }
 }

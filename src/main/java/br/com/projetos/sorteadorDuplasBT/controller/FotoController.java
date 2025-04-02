@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
     public class FotoController {
     @GetMapping("/{nomeArquivo}")
     public ResponseEntity<Resource> obterFoto(@PathVariable String nomeArquivo) throws IOException {
-        Path caminhoArquivo = Paths.get("uploads/", nomeArquivo);
+        Path caminhoArquivo = Paths.get("uploads/fotos/", nomeArquivo);
         Resource resource = new UrlResource(caminhoArquivo.toUri());
 
         if (resource.exists() || resource.isReadable()) {
