@@ -1,13 +1,14 @@
 package br.com.projetos.sorteadorDuplasBT.service;
 
-import br.com.projetos.sorteadorDuplasBT.controller.CampeonatoController;
-import br.com.projetos.sorteadorDuplasBT.model.Campeonato;
-import br.com.projetos.sorteadorDuplasBT.repository.CampeonatoRepository;
-import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
+
+import br.com.projetos.sorteadorDuplasBT.exception.CampeonatoNaoEncontradoException;
+import br.com.projetos.sorteadorDuplasBT.model.Campeonato;
+import br.com.projetos.sorteadorDuplasBT.repository.CampeonatoRepository;
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class CampeonatoService {
@@ -21,7 +22,7 @@ public class CampeonatoService {
 
     public Campeonato buscarPorId(Long id) {
         return campeonatoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Campeonato não encontrado"));
+                .orElseThrow(() -> new CampeonatoNaoEncontradoException(id));
     }
 
     public Campeonato salvar(Campeonato campeonato) {

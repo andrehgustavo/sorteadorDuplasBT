@@ -27,11 +27,10 @@ public class JogadorController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Jogador> criarJogador(
         @RequestParam("nome") String nome,
-        @RequestParam("classificacaoId") Long classificacaoId,
         @RequestParam(value = "foto", required = false) MultipartFile foto
     ) {
         try {
-            Jogador jogador = jogadorService.salvarJogador(nome, classificacaoId, foto);
+            Jogador jogador = jogadorService.salvarJogador(nome, foto);
             return ResponseEntity.status(HttpStatus.CREATED).body(jogador);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -42,10 +41,9 @@ public class JogadorController {
     public ResponseEntity<Jogador> atualizarJogador(
         @PathVariable Long id,
         @RequestParam("nome") String nome,
-        @RequestParam("classificacaoId") Long classificacaoId,
         @RequestPart(value = "foto", required = false) MultipartFile foto) throws IOException {
         
-        Jogador jogadorAtualizado = jogadorService.atualizarJogador(id, nome, classificacaoId, foto);
+        Jogador jogadorAtualizado = jogadorService.atualizarJogador(id, nome, foto);
         return ResponseEntity.ok(jogadorAtualizado);
     }
 

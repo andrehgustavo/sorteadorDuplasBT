@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.projetos.sorteadorDuplasBT.dto.InscricaoBateladaResultadoDTO;
+import br.com.projetos.sorteadorDuplasBT.dto.InscricaoRequestDTO;
 import br.com.projetos.sorteadorDuplasBT.model.Inscricao;
-import br.com.projetos.sorteadorDuplasBT.model.Jogador;
 import br.com.projetos.sorteadorDuplasBT.service.InscricaoService;
 
 @RestController
@@ -30,9 +32,17 @@ public class InscricaoController {
         return ResponseEntity.ok(inscricaoService.listarPorCampeonato(campeonatoId));
     }
 
-    @PostMapping("/{campeonatoId}/{jogadorId}")
-    public ResponseEntity<Inscricao> inscreverJogador(@PathVariable Long campeonatoId, @PathVariable Long jogadorId) {
-        return ResponseEntity.ok(inscricaoService.inscreverJogador(campeonatoId, jogadorId));
+    @PostMapping("/campeonato/{campeonatoId}")
+    public ResponseEntity<Inscricao> inscreverJogador(@PathVariable Long campeonatoId, 
+    @RequestParam("jogadorId") Long jogadorId,
+    @RequestParam("classificacaoId") Long classificacaoId){
+        return ResponseEntity.ok(inscricaoService.inscreverJogador(campeonatoId, jogadorId, classificacaoId));
+    }
+
+    @PatchMapping("/campeonato/{campeonatoId}")
+    public ResponseEntity<InscricaoBateladaResultadoDTO> inscreverJogadoresEmBatelada(@PathVariable Long campeonatoId, @RequestBody List<InscricaoRequestDTO> inscricoesRequestDTOs) {
+        InscricaoBateladaResultadoDTO resultado = inscricaoService.inscreverJogadoresEmBatelada(campeonatoId, inscricoesRequestDTOs);
+        return ResponseEntity.ok(resultado);
     }
 
     @DeleteMapping("/{inscricaoId}")

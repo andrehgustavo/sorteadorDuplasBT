@@ -1,20 +1,22 @@
 package br.com.projetos.sorteadorDuplasBT.service;
 
-import br.com.projetos.sorteadorDuplasBT.model.Jogador;
-import br.com.projetos.sorteadorDuplasBT.model.Campeonato;
-import br.com.projetos.sorteadorDuplasBT.model.Classificacao;
-import br.com.projetos.sorteadorDuplasBT.model.Dupla;
-import br.com.projetos.sorteadorDuplasBT.model.Inscricao;
-import br.com.projetos.sorteadorDuplasBT.repository.CampeonatoRepository;
-import br.com.projetos.sorteadorDuplasBT.repository.DuplaRepository;
-import br.com.projetos.sorteadorDuplasBT.repository.InscricaoRepository;
-import br.com.projetos.sorteadorDuplasBT.repository.JogadorRepository;
-import jakarta.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.*;
-import java.util.stream.Collectors;
+
+import br.com.projetos.sorteadorDuplasBT.model.Campeonato;
+import br.com.projetos.sorteadorDuplasBT.model.Dupla;
+import br.com.projetos.sorteadorDuplasBT.model.Inscricao;
+import br.com.projetos.sorteadorDuplasBT.repository.DuplaRepository;
+import br.com.projetos.sorteadorDuplasBT.repository.InscricaoRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class SorteioService {
@@ -33,7 +35,7 @@ public class SorteioService {
     
         // Agrupar inscricoes por classificação
         Map<Integer, List<Inscricao>> inscricoesPorClassificacao = inscricoes.stream()
-                .collect(Collectors.groupingBy(i -> i.getJogador().getClassificacao().getOrdem()));
+                .collect(Collectors.groupingBy(i -> i.getClassificacao().getOrdem()));
     
         LinkedList<Integer> ordens = new LinkedList<>(inscricoesPorClassificacao.keySet());
         Collections.sort(ordens);

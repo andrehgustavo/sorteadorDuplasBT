@@ -23,6 +23,10 @@ public class Inscricao {
     @ManyToOne
     @JoinColumn(name = "id_jogador", nullable = false)
     private Jogador jogador;
+    
+    @ManyToOne
+    @JoinColumn(name = "id_classificacao", nullable = false)
+    private Classificacao classificacao;
 
     @Column(nullable = false)
     private LocalDate dataInscricao;
@@ -34,11 +38,12 @@ public class Inscricao {
     private boolean participaBrinde = false;
     
     
-    public Inscricao(Campeonato campeonato2, Jogador jogador, LocalDate now, StatusInscricao status) {
+    public Inscricao(Campeonato campeonato2, Jogador jogador, LocalDate now, StatusInscricao status, Classificacao classificacao) {
         this.campeonato = campeonato2;
         this.jogador = jogador;
         this.dataInscricao = now;
         this.status = status;
         this.participaBrinde = true;
+        this.classificacao = classificacao;
     }
 }

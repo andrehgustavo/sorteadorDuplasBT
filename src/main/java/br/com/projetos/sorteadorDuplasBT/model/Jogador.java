@@ -14,10 +14,6 @@ public class Jogador {
     
     @Column(nullable = false)
     private String nome;
-    
-    @ManyToOne
-    @JoinColumn(name = "id_classificacao", nullable = false)
-    private Classificacao classificacao;
    
     @Column(name = "foto_url") 
     private String fotoUrl;
